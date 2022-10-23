@@ -32,3 +32,6 @@ CAT_COL = ['MSZoning', 'LotShape', 'LandContour', 'LotConfig', 'LandSlope',
        'SaleCondition', 'Utilities']
 
 TARGET_COL = ['SalePrice']
+
+DROP_COL = ['Alley', 'FireplaceQu', 'PoolQC', 'Fence', 'MiscFeature']
+

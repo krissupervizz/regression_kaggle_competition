@@ -4,7 +4,7 @@ import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
 from src.utils1 import save_as_pickle
-from preprocess1 import preprocess_data, preprocess_target, extract_target
+from preprocess1 import *
 import pandas as pd
 
 
@@ -23,6 +23,7 @@ def main(input_filepath, output_data_filepath, output_target_filepath=None):
     df = preprocess_data(df)
     if output_target_filepath:
         df, target = extract_target(df)
+        target = preprocess_target(target)
         save_as_pickle(target, output_target_filepath)
     save_as_pickle(df, output_data_filepath)
 

@@ -30,8 +30,7 @@ def clear_col_list(lst: list, clear_lst:list) -> list:
     return lst
 
 def preprocess_obj_col(df: pd.DataFrame) -> pd.DataFrame:
-    drop_column = df[cfg.OBJ_COL].loc[:, (df[cfg.OBJ_COL].isna().sum() > 200).values].columns.to_list()
-    df = df.drop(drop_column, axis=1)
+    df = df.drop(cfg.DROP_COL, axis=1)
 
     return df
 
@@ -64,7 +63,7 @@ def preprocess_cat_col(df: pd.DataFrame) -> pd.DataFrame:
     df[cfg.CAT_COL] = df[cfg.CAT_COL].astype('category')
     return df
 
-def preprocess(df: pd.DataFrame) -> pd.DataFrame:
+def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     df = drop_id(df)
     df = preprocess_real_col(df)
     df = preprocess_int_col(df)
@@ -76,6 +75,10 @@ def preprocess(df: pd.DataFrame) -> pd.DataFrame:
     df = preprocess_order_bsmt_col(df)
     df = preprocess_order_garage_col(df)
     df = preprocess_cat_col(df)
+    return df
+
+def preprocess_target(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.astype('int32')
     return df
 
 
