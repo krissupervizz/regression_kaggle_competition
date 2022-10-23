@@ -1,0 +1,98 @@
+schema: '2.0'
+stages:
+  preprocessing:
+    cmd: python3 src/data/make_dataset.py data/raw/train.csv data/interim/train.pkl
+      data/interim/target.pkl
+    deps:
+    - path: data/raw/train.csv
+      md5: 80ccab65fb115cbad143dbbd2bcd5577
+      size: 462137
+    outs:
+    - path: data/interim
+      md5: 0e1bc68a967f2f49c8013fb0376389b1.dir
+      size: 208885
+      nfiles: 3
+  feature modeling:
+    cmd: python3 src/features/build_features.py data/interim/train.pkl data/process/train.pkl
+    deps:
+    - path: data/interim
+      md5: 0e1bc68a967f2f49c8013fb0376389b1.dir
+      size: 208885
+      nfiles: 3
+    - path: src/features/build_features.py
+      md5: 1d08149c0fef6ae87481de2a2896be4b
+      size: 1350
+    - path: src/features/feature1.py
+      md5: fbe122c0195aa2275f8a03e0b3971b56
+      size: 1036
+    outs:
+    - path: data/process
+      md5: 0bc6d12e527b6910aa8de5b091c7bb7a.dir
+      size: 210441
+      nfiles: 3
+  train_model:
+    cmd: python3 src/models/train_model.py data/process/train.pkl data/interim/target.pkl
+      models/catboost_model.pkl models/sklearn_model.pkl data/index/idx.pkl
+    deps:
+    - path: data/interim
+      md5: 0e1bc68a967f2f49c8013fb0376389b1.dir
+      size: 208885
+      nfiles: 3
+    - path: data/process
+      md5: 0bc6d12e527b6910aa8de5b091c7bb7a.dir
+      size: 210441
+      nfiles: 3
+    - path: src/models/train_model.py
+      md5: 8c2dc818ad0d2a96ebf58c6fe698985a
+      size: 4394
+    outs:
+    - path: data/index
+      md5: e7e8b2a18b3fa54e67ef8640ecbdc85f.dir
+      size: 838
+      nfiles: 1
+    - path: models
+      md5: 59b8c1ffc6af2f50324038cd18ea99a0.dir
+      size: 3548525
+      nfiles: 3
+  inference:
+    cmd: python3 src/models/predict_model.py data/raw/test.csv models/catboost_model.pkl
+      models/sklearn_model.pkl reports/inference/inference.json
+    deps:
+    - path: data/raw
+      md5: f1bee252fc1163f4595334fedeb31899.dir
+      size: 962294
+      nfiles: 4
+    - path: models
+      md5: 59b8c1ffc6af2f50324038cd18ea99a0.dir
+      size: 3548525
+      nfiles: 3
+    outs:
+    - path: reports/inference
+      md5: eb5bfdc34c9d18c67e1e4641b2ca9447.dir
+      size: 23576
+      nfiles: 1
+  evaluate:
+    cmd: python3 src/models/evaluate.py data/process/train.pkl data/interim/target.pkl
+      data/index/idx.pkl models/catboost_model.pkl models/sklearn_model.pkl reports/figures/metrics.json
+    deps:
+    - path: data/index
+      md5: e7e8b2a18b3fa54e67ef8640ecbdc85f.dir
+      size: 838
+      nfiles: 1
+    - path: data/interim
+      md5: 0e1bc68a967f2f49c8013fb0376389b1.dir
+      size: 208885
+      nfiles: 3
+    - path: data/process
+      md5: 0bc6d12e527b6910aa8de5b091c7bb7a.dir
+      size: 210441
+      nfiles: 3
+    - path: models
+      md5: 59b8c1ffc6af2f50324038cd18ea99a0.dir
+      size: 3548525
+      nfiles: 3
+    outs:
+    - path: reports/figures
+      md5: 14e783db4d9d0f8afb0a5569d9a75df9.dir
+      size: 237
+      nfiles: 2

@@ -1,0 +1,57 @@
+stages:
+  preprocessing:
+    cmd: python3 src/data/make_dataset.py data/raw/train.csv data/interim/train.pkl
+      data/interim/target.pkl
+    deps:
+    - data/raw/train.csv
+    outs:
+    - data/interim:
+        persist: true
+
+  feature modeling:
+    cmd: python3 src/features/build_features.py data/interim/train.pkl data/process/train.pkl
+    deps:
+    - data/interim
+    - src/features/build_features.py
+    - src/features/feature1.py
+    outs:
+    - data/process:
+        persist: true
+
+  train_model:
+    cmd: python3 src/models/train_model.py data/process/train.pkl data/interim/target.pkl models/catboost_model.pkl 
+          models/sklearn_model.pkl data/index/idx.pkl
+    deps:
+    - data/interim
+    - data/process
+    - src/models/train_model.py
+    outs:
+    - data/index:
+        persist: true
+    - models:
+        persist: true
+
+  evaluate: 
+    cmd: python3 src/models/evaluate.py data/process/train.pkl data/interim/target.pkl data/index/idx.pkl 
+        models/catboost_model.pkl models/sklearn_model.pkl reports/figures/metrics.json
+
+    deps:
+    - data/interim
+    - data/process
+    - data/index
+    - models
+
+    metrics:
+    - reports/figures:
+        cache: false
+        persist: true
+
+  inference:
+    cmd: python3 src/models/predict_model.py data/raw/test.csv models/catboost_model.pkl 
+        models/sklearn_model.pkl reports/inference/inference.json
+    deps:
+    - data/raw
+    - models
+    outs:
+      - reports/inference:
+          persist: true

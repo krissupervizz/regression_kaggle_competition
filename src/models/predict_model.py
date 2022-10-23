@@ -36,6 +36,7 @@ def main(input_data_filepath, input_catboost_model, input_sklearn_model, output_
     test_data = pd.read_csv(input_data_filepath)
     test_data = preprocess_data(test_data)
     # feature engineering
+    test_data = noise_level(test_data)
 
     sklearn_model = pickle.load(open(input_sklearn_model, 'rb'))
     catboost_model = pickle.load(open(input_catboost_model, 'rb'))
