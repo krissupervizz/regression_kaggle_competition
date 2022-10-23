@@ -5,7 +5,7 @@ from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
 from src.utils import save_as_pickle
 import pandas as pd
-from features import add_early_wakeup
+from feature1 import noise_level
 
 
 @click.command()
@@ -16,9 +16,11 @@ def main(input_filepath, output_data_filepath):
         cleaned data ready to be analyzed (saved in ../processed).
     """
     logger = logging.getLogger(__name__)
-    logger.info('making final data set from raw data')
+    logger.info('making final data set from interim data')
 
-    pass
+    df = pd.read_pickle(input_filepath)
+    df = noise_level(df)
+    save_as_pickle(df, output_data_filepath)
 
 if __name__ == '__main__':
     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
