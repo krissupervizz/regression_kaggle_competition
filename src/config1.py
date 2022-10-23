@@ -1,5 +1,5 @@
 ID_COL = ['Id']
-REAL_COL = ['LotFrontage', 'MasVnrArea', 'GarageYrBlt']
+REAL_COL = ['LotFrontage', 'MasVnrArea']
 INT_COL = ['MSSubClass', 'LotArea', 'OverallQual', 'OverallCond',
  'YearBuilt', 'YearRemodAdd', 'BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF',
  'TotalBsmtSF', '1stFlrSF', '2ndFlrSF', 'LowQualFinSF', 'GrLivArea',
@@ -34,6 +34,4 @@ CAT_COL = ['MSZoning', 'LotShape', 'LandContour', 'LotConfig', 'LandSlope',
 TARGET_COL = ['SalePrice']
 
 DROP_COL = ['Alley', 'FireplaceQu', 'PoolQC', 'Fence', 'MiscFeature', 'LotArea', 'BsmtFinSF1', 'TotalBsmtSF', '1stFlrSF', 'GrLivArea', 
-            'BedroomAbvGr', 'PoolArea', 'MiscVal', 'EnclosedPorch', '3SsnPorch', 'ScreenPorch']
-
-
+            'BedroomAbvGr', 'PoolArea', 'MiscVal', 'EnclosedPorch', '3SsnPorch', 'ScreenPorch', 'GarageYrBlt']

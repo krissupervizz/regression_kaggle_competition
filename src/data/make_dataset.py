@@ -3,6 +3,11 @@ import click
 import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
+import os
+os.chdir('/Users/Кристина/regression_kaggle_competition/')
+import sys
+sys.path.insert(0, 'C:\\Users\\Кристина\\regression_kaggle_competition')
+sys.path.insert(0, '../../regression_kaggle_competition/')
 from src.utils1 import save_as_pickle
 from preprocess1 import *
 import pandas as pd

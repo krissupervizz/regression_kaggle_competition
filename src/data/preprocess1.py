@@ -12,15 +12,12 @@ def extract_target(df: pd.DataFrame):
     return df, target 
 
 def preprocess_real_col(df: pd.DataFrame) -> pd.DataFrame:
-    df[cfg.REAL_COL[0]] = df[cfg.REAL_COL[0]].fillna(value=0.0)
-    selected_rows = df[df[cfg.REAL_COL[1]].isnull()].index.to_list()
-    df = df.drop(selected_rows, axis=0)
-    df = df.drop(cfg.REAL_COL[2], axis=1)
-    cfg.REAL_COL.remove(cfg.REAL_COL[2])
+    df[cfg.REAL_COL] = df[cfg.REAL_COL].fillna(0.0)
     df[cfg.REAL_COL] = df[cfg.REAL_COL].astype(np.float32)
-
     return df
+
 def preprocess_int_col(df: pd.DataFrame) -> pd.DataFrame:
+    df[cfg.INT_COL] = df[cfg.INT_COL].fillna(0)
     df[cfg.INT_COL] = df[cfg.INT_COL].astype(np.int32)
     return df
 
@@ -43,7 +40,7 @@ def preprocess_order_nan_col(df: pd.DataFrame) -> pd.DataFrame:
     df[cfg.ORDER_COL_NAN] = df[cfg.ORDER_COL_NAN].replace(['Ex', 'Gd', 'TA', 'Fa', 'Po', nan], [5, 4, 3, 2, 1, 0]).astype(np.int8)
     return df
 def preprocess_order_col(df: pd.DataFrame) -> pd.DataFrame:
-    df[cfg.ORDER_COL] = df[cfg.ORDER_COL].replace(['Ex', 'Gd', 'TA', 'Fa', 'Po'], [5, 4, 3, 2, 1]).astype(np.int8)
+    df[cfg.ORDER_COL] = df[cfg.ORDER_COL].replace(['Ex', 'Gd', 'TA', 'Fa', 'Po', nan], [5, 4, 3, 2, 1, 0]).astype(np.int8)
     return df
 def preprocess_order_an_col(df: pd.DataFrame) -> pd.DataFrame:
     df[cfg.ORDER_COL_AN] = df[cfg.ORDER_COL_AN].replace(['Gd', 'Av', 'Mn', 'No', nan], [4, 3, 2, 1, 0]).astype(np.int8)
@@ -56,10 +53,7 @@ def preprocess_order_garage_col(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def preprocess_cat_col(df: pd.DataFrame) -> pd.DataFrame:
-    selected_rows = df[df['GarageType'].isnull()].index.to_list()
-    df = df.drop(selected_rows, axis=0)
-    selected_rows = df[df['Electrical'].isnull()].index.to_list()
-    df = df.drop(selected_rows, axis=0)
+    df[cfg.CAT_COL] = df[cfg.CAT_COL].fillna('')
     df[cfg.CAT_COL] = df[cfg.CAT_COL].astype('category')
     return df
 

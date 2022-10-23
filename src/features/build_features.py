@@ -3,6 +3,8 @@ import click
 import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
+import sys
+sys.path.insert(0, 'C:\\Users\\Кристина\\regression_kaggle_competition')
 from src.utils import save_as_pickle
 import pandas as pd
 from feature1 import noise_level

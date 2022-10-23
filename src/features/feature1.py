@@ -22,4 +22,3 @@ def noise_level(df: pd.DataFrame):
     df['noise_level'] = level_noise
     df['noise_level'] = df['noise_level'].astype(np.int8)
     return df
-
